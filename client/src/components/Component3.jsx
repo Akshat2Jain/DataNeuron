@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { message } from "antd";
-import { useForm } from "antd/es/form/Form";
-import useGetCount from "../customHooks/useGetCount";
 
 const Component3 = () => {
   const [data, setData] = useState("");
   const [show, setShow] = useState("");
   const [editMode, setEditMode] = useState(false);
-  const [count, setCount] = useState({});
 
   async function handleAdd() {
     setEditMode(true);
@@ -16,10 +13,13 @@ const Component3 = () => {
       return message.success("Enter new data in component");
     }
     try {
-      const res = await axios.post("http://localhost:8080/component/addData", {
-        componentId: 3,
-        data: data,
-      });
+      const res = await axios.post(
+        "https://dataneuron-9k1q.onrender.com/component/addData",
+        {
+          componentId: 3,
+          data: data,
+        }
+      );
       message.success(res.data.msg);
       setShow(res.data.component.data);
       setData("");
@@ -32,7 +32,7 @@ const Component3 = () => {
   async function handleUpdate() {
     try {
       const res = await axios.post(
-        "http://localhost:8080/component/updateData",
+        "https://dataneuron-9k1q.onrender.com/component/updateData",
         {
           componentId: 3,
           data: data,
@@ -49,19 +49,6 @@ const Component3 = () => {
     setData(show);
     setEditMode(true);
   };
-
-  async function getCount() {
-    try {
-      const c = await axios.get("http://localhost:8080/component/getCount");
-      setCount(c.data);
-    } catch (error) {
-      console.log(error.response.data.msg);
-    }
-  }
-
-  useEffect(() => {
-    getCount();
-  }, [show]);
 
   return (
     <>
@@ -86,7 +73,6 @@ const Component3 = () => {
             <button onClick={handleAdd}>Add Data</button>
           </div>
         </div>
-        <h3>{`Total AddCounts : ${count?.count?.addCount} & Update Counts : ${count?.count?.updateCount}`}</h3>
       </div>
     </>
   );

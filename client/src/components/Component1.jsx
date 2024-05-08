@@ -13,10 +13,13 @@ const Component1 = () => {
       return message.success("Enter new data in component");
     }
     try {
-      const res = await axios.post("http://localhost:8080/component/addData", {
-        componentId: 1,
-        data: data,
-      });
+      const res = await axios.post(
+        "https://dataneuron-9k1q.onrender.com/component/addData",
+        {
+          componentId: 1,
+          data: data,
+        }
+      );
       message.success(res.data.msg);
       setShow(res.data.component.data);
       setData("");
@@ -29,7 +32,7 @@ const Component1 = () => {
   async function handleUpdate() {
     try {
       const res = await axios.post(
-        "http://localhost:8080/component/updateData",
+        "https://dataneuron-9k1q.onrender.com/component/updateData",
         {
           componentId: 1,
           data: data,
