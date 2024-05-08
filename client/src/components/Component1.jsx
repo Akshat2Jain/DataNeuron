@@ -7,12 +7,15 @@ const Component1 = () => {
   const [show, setShow] = useState("");
   const [editMode, setEditMode] = useState(false);
 
+  // Function to handle adding data
   async function handleAdd() {
     setEditMode(true);
+    // If data is empty, show message and return
     if (data == "") {
       return message.success("Enter new data in component");
     }
     try {
+      // Make POST request to add data
       const res = await axios.post(
         "https://dataneuron-9k1q.onrender.com/component/addData",
         {
@@ -21,6 +24,7 @@ const Component1 = () => {
         }
       );
       message.success(res.data.msg);
+      // Update displayed data and clear input
       setShow(res.data.component.data);
       setData("");
       setEditMode(false);
@@ -28,7 +32,7 @@ const Component1 = () => {
       message.error(error.response.data.msg);
     }
   }
-
+  // Function to handle updating data
   async function handleUpdate() {
     try {
       const res = await axios.post(
@@ -49,6 +53,7 @@ const Component1 = () => {
     setData(show);
     setEditMode(true);
   };
+  // JSX structure of Component1
   return (
     <>
       <div className="component">

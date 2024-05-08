@@ -2,7 +2,7 @@ import React from "react";
 import Component1 from "./components/Component1";
 import Component2 from "./components/Component2";
 import Component3 from "./components/Component3";
-import { Resize, ResizeVertical, ResizeHorizon } from "react-resize-layout";
+import { Resize, ResizeVertical, ResizeHorizon } from "react-resize-layout"; // Importing components from react-resize-layout library
 import "./App.css";
 
 const App = () => {

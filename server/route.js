@@ -1,11 +1,16 @@
+// Importing necessary libraries
+
 const express = require("express");
 const { ComponentDb, CountDb } = require("./db");
 const router = express.Router();
-const timer = new Date();
+
+// Route for adding new data
 router.post("/addData", async function (req, res) {
   try {
     const id = req.body.componentId;
     const data = req.body.data;
+
+    // Recording start time for performance measurement
     const startTime = performance.now();
     await ComponentDb.deleteOne({ componentId: id });
     const component = await ComponentDb.create({
@@ -19,6 +24,8 @@ router.post("/addData", async function (req, res) {
       },
       { upsert: true, new: true }
     );
+    // Recording start time for performance measurement
+    // Sending response with success message, newly added component, and updated count
     const executionTime = performance.now() - startTime;
     console.log(`Execution time for Add API: ${executionTime.toFixed(2)} ms`);
     res
@@ -32,12 +39,16 @@ router.post("/addData", async function (req, res) {
   }
 });
 
+// Route for updating existing data
 router.post("/updateData", async function (req, res) {
   try {
     const id = req.body.componentId;
     const data = req.body.data;
     const startTime = performance.now();
+    // Finding existing component with given componentId
     const Comp = await ComponentDb.findOne({ componentId: id });
+
+    // Updating data of existing component
     await ComponentDb.updateOne(
       {
         _id: Comp._id,
@@ -46,6 +57,8 @@ router.post("/updateData", async function (req, res) {
         data: data,
       }
     );
+
+    // Updating count for updated data
     const count = await CountDb.findOneAndUpdate(
       {},
       {
@@ -53,6 +66,8 @@ router.post("/updateData", async function (req, res) {
       },
       { upsert: true, new: true }
     );
+
+    // Finding updated component
     const Comp2 = await ComponentDb.findOne({ componentId: id });
     const executionTime = performance.now() - startTime;
     console.log(
@@ -71,9 +86,13 @@ router.post("/updateData", async function (req, res) {
   }
 });
 
+// Route for getting count
+
 router.get("/getCount", async function (req, res) {
   try {
     const count = await CountDb.findById({ _id: "663af60299ddfec86e3bb533" });
+
+    // Sending response with count document
     res.status(200).json({ count });
   } catch (error) {
     console.log(error);
